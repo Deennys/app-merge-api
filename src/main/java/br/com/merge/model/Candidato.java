@@ -65,6 +65,8 @@ public class Candidato {
     /**
      * Construtor padrão sem atributos
      */
+    
+    private int score;
     public Candidato(){
     }
 
@@ -102,6 +104,29 @@ public class Candidato {
 		this.tipoLogin = tipoLogin;
 		
 	
+	}
+	
+
+
+	public Candidato(int codigo, String nome, String cpf, String sexo, String email, String senhaLogin,
+			String estadoCivil, String dtNascimento, Telefone telefone, Endereco endereco, Curriculo curriculo,
+			String statusLogin, String tipoLogin, Disc disc, int score) {
+		super();
+		this.codigo = codigo;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.sexo = sexo;
+		this.email = email;
+		this.senhaLogin = senhaLogin;
+		this.estadoCivil = estadoCivil;
+		this.dtNascimento = dtNascimento;
+		this.telefone = telefone;
+		this.endereco = endereco;
+		this.curriculo = curriculo;
+		this.statusLogin = statusLogin;
+		this.tipoLogin = tipoLogin;
+		this.disc = disc;
+		this.score = score;
 	}
 
 	/**
@@ -238,6 +263,22 @@ public class Candidato {
 		this.statusLogin = statusLogin;
 		this.tipoLogin = tipoLogin;
 		this.disc = disc;
+	}
+
+	
+	
+	
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 
 	/**

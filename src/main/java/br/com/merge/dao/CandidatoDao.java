@@ -271,7 +271,74 @@ public class CandidatoDao {
 
 		return lista;
 	}
+	
 
+	
+	public Candidato select(int id) throws SQLException, IdNotFoundException, ClassNotFoundException {
+
+		PreparedStatement stmt = conexao.prepareStatement("select * from T_MERGE_CANDIDATO where ID_CANDIDATO = ?");
+
+		stmt.setInt(1, id);
+
+		ResultSet result = stmt.executeQuery();
+
+		if (!result.next()) {
+			throw new IdNotFoundException("CANDIDATO NÃO ENCONTRADO");
+		}
+		int codigo = result.getInt("ID_CANDIDATO");
+		String nome = result.getString("NM_CANDIDATO");
+		String dataNascim = result.getString("DT_NASCIMENTO");
+		String estadoCivil = result.getString("DS_ESTADO_CIVIL");
+		String cpf = result.getString("NR_CPF");
+		String sexo = result.getString("DS_SEXO");
+		String email = result.getString("DS_EMAIL");
+		String senha = result.getString("PS_SENHA");
+		String statusLogin = result.getString("ST_LOGIN");
+		String tipoLogin = result.getString("TP_LOGIN");
+
+		EnderecoBo endereco = new EnderecoBo(conexao);
+		int codigoEndereco = endereco.listar(codigo).getCodigo();
+		String cep = endereco.listar(codigo).getCep();
+		String bairro = endereco.listar(codigo).getBairro();
+		String numero = endereco.listar(codigo).getNumeroLogradouro();
+		String nomeLogradouro = endereco.listar(codigo).getLogradouro();
+		String complemento = endereco.listar(codigo).getComplemento();
+		String nomeCidade = endereco.listar(codigo).getCidade();
+		String nomeEstado = endereco.listar(codigo).getEstado();
+		String SiglaEstado = endereco.listar(codigo).getSiglaEstado();
+
+		TelefoneBo telefone = new TelefoneBo(conexao);
+		int codigoTelefone = telefone.listar(codigo).getCodigo();
+		String ddd = telefone.listar(codigo).getDdd();
+		String numeroTelelefone = telefone.listar(codigo).getNumero();
+		String tipoTelefone = telefone.listar(codigo).getTipo();
+
+		DiscBo disc = new DiscBo(conexao);
+		int codigoDisc = disc.listar(codigo).getCodigo();
+		int dominante = disc.listar(codigo).getDominante();
+		int estavel = disc.listar(codigo).getEstavel();
+		int influente = disc.listar(codigo).getInfluente();
+		int condescendente = disc.listar(codigo).getCondescendente();
+
+		Disc discCandidato = new Disc(codigoDisc, dominante, estavel, influente, condescendente);
+		Telefone telefoneCandidato = new Telefone(codigoTelefone, ddd, numeroTelelefone, tipoTelefone);
+		Endereco enderecoCandidato = new Endereco(codigoEndereco, cep, bairro, numero, nomeLogradouro, complemento,
+				nomeCidade, nomeEstado, SiglaEstado);
+
+		CurriculoBo curriculo = new CurriculoBo(conexao);
+		int codigoCurriculo = curriculo.listar(codigo).getCodigo();
+		List<Curso> cursos = curriculo.listar(codigo).getCursos();
+		List<Formacao> formacoes = curriculo.listar(codigo).getFormacoes();
+		List<Idiomas> idiomas = curriculo.listar(codigo).getIdiomas();
+		String data = curriculo.listar(codigo).getData();
+
+		Curriculo curriculoCandidato = new Curriculo(codigoCurriculo, cursos, formacoes, idiomas, data);
+
+		Candidato candidato = new Candidato(codigo, nome, cpf, sexo, email, senha, estadoCivil, dataNascim,
+				telefoneCandidato, enderecoCandidato, curriculoCandidato, statusLogin, tipoLogin, discCandidato);
+
+		return candidato;
+	}
 	
 	/**
 	 * Metodo para busca de candidato

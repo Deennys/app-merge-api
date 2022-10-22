@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.merge.dao.CandidaturaDao;
 import br.com.merge.excetion.DadoInvalidoException;
 import br.com.merge.excetion.IdNotFoundException;
+import br.com.merge.model.Candidato;
 import br.com.merge.model.Candidatura;
 
 /**
@@ -55,10 +56,13 @@ public class CandidaturaBo {
 	 * @param ID do candidato
 	 */
 	public List<Candidatura> listar(int id) throws SQLException, IdNotFoundException, ClassNotFoundException {
-
 		return candidatura.select(id);
 	}
 
+	
+	public List<Candidato> listarAll(int id) throws SQLException, IdNotFoundException, ClassNotFoundException {
+		return candidatura.selectCandidatos(id);
+	}
 	
 	public List<Candidatura> listarPorVaga(int id) throws SQLException, IdNotFoundException, ClassNotFoundException {
 		System.out.println("Candidatura por vaga" + id);

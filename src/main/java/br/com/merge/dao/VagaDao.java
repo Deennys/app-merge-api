@@ -228,6 +228,12 @@ public class VagaDao {
 	 */
 	public void remover(int id) throws SQLException, IdNotFoundException {
 
+		PreparedStatement stmtDel = conexao.prepareStatement("DELETE FROM T_MERGE_CANDIDATURA WHERE ID_VAGAS = ?");
+		
+		stmtDel.setInt(1, id);
+
+		stmtDel.executeUpdate();
+		
 		PreparedStatement stmt = conexao.prepareStatement("DELETE FROM T_MERGE_VAGAS WHERE ID_VAGAS = ?");
 
 		stmt.setInt(1, id);

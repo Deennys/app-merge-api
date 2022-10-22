@@ -20,6 +20,7 @@ import br.com.merge.bo.CandidaturaBo;
 import br.com.merge.excetion.DadoInvalidoException;
 import br.com.merge.excetion.IdNotFoundException;
 import br.com.merge.factory.ConnetionFactoy;
+import br.com.merge.model.Candidato;
 import br.com.merge.model.Candidatura;
 
 /**
@@ -67,6 +68,24 @@ public class CandidaturaResource {
 
 	}
 	
+	@GET
+	@Path("/candidatos/vaga={vaga}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Candidato> listaAllCandidatos(@PathParam("vaga") int id) throws ClassNotFoundException, SQLException, IdNotFoundException {
+		try {
+			conexao = ConnetionFactoy.abrirConexao();
+			cand = new CandidaturaBo(conexao);
+			return cand.listarAll(id);
+		} catch (IdNotFoundException e) {
+			return (List<Candidato>) Response.status(400, e.getMessage())
+					.entity("\"mensagem\":" + "\"" + e.getMessage() + "\"").type(MediaType.APPLICATION_JSON).build();
+
+		} finally {
+			conexao.close();
+		}
+
+	}
+	
 	
 	@GET
 	@Path("/vaga={vaga}")
@@ -105,7 +124,7 @@ public class CandidaturaResource {
 			conexao = ConnetionFactoy.abrirConexao();
 			cand = new CandidaturaBo(conexao);
 			cand.listar(codigoVaga, codigoCandidato);
-			return Response.status(200, "Já possui").build();
+			return Response.status(200, "Já possui").entity(cand.listar(codigoVaga, codigoCandidato)).type(MediaType.APPLICATION_JSON).build();
 		} catch (IdNotFoundException e) {
 			return Response.status(404, e.getMessage()).build();
 		} finally {
